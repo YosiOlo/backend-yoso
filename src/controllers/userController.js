@@ -1,4 +1,4 @@
-const { user_roles, users } = require("../models");
+const { user_roles, users, statuses } = require("../models");
 
 const jwt = require("jsonwebtoken");
 
@@ -52,7 +52,12 @@ module.exports = {
                     model: user_roles,
                     as: 'user_role',
                     attributes: ['code', 'name']
-                }
+                },
+                {
+                    model: statuses,
+                    as: 'user_status',
+                    attributes: ['name']
+                },
             ]
         }).then(data => {
             res.status(200).send({
@@ -199,19 +204,29 @@ module.exports = {
             );
 
             const id = user.id;
+            const { status } = await users.findByPk(id);
+            
+            if (status === 1) {
+                res.status(422).render("response", {
+                    message: "This account has been activated",
+                    color: "#dc3545",
+                })
+
+                return
+            }
 
             await users.update({ status: 1 }, { where: { id } });
 
             res.status(200).render("response", {
-                message: "Yeay... your account has been actived",
-                color: "#2F82FF",
+                message: "Your account has been successfully activated",
+                color: "#198754",
             });
         } catch (err) {
             res.status(400).json({ message: err.message });
         }
     },
 
-    updateUser: (req, res) => { },
+    updateUser: (req, res) => {},
 
-    deleteUser: (req, res) => { },
+    deleteUser: (req, res) => {},
 }

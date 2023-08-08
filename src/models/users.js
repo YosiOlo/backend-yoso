@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_user_role',
         as: 'user_role',
       })
+
+      this.belongsTo(models.statuses, {
+        foreignKey: 'status',
+        as: 'user_status',
+      })
     }
   }
   users.init({
