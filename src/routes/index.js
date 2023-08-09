@@ -1,7 +1,7 @@
 const mainRoutes = require("express").Router();
 
-const userRolesRoutes = require("./userRolesRoute");
+const userRoutes = require("./userRoute");
 
-mainRoutes.use("/api/user", userRolesRoutes);
+mainRoutes.use("/api/user", userRoutes);
 
 module.exports = mainRoutes;

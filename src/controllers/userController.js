@@ -2,33 +2,7 @@ const { user_roles, users, statuses } = require("../models");
 
 const jwt = require("jsonwebtoken");
 
-const bcrypt = require("bcrypt");
-
-const nodemailer = require("nodemailer");
-
-const encryptedPassword = (password) => {
-    return new Promise((resolve, reject) => {
-        bcrypt.hash(password, 10, (err, encrypted) => {
-            if (!!err) {
-                reject(err);
-                return;
-            }
-
-            resolve(encrypted);
-        })
-    })
-}
-
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    auth: {
-        user: "yusron.arly@gmail.com",
-        pass: "nbmhvzewnfdaohji",
-    },
-});
+const { checkPassword, encryptedPassword, getTokenPayload } = require("../utils");
 
 module.exports = {
     getAllUserRoles: (req, res) => {
@@ -72,130 +46,6 @@ module.exports = {
         })
     },
 
-    whoIsLogin: async (req, res, next) => {
-        try {
-            const bearerToken = req.headers.authorization;
-
-            const token = bearerToken.split(" ")[1];
-
-            const payload = jwt.verify(
-                token,
-                process.env.JWT_SECRET_KEY || "Rahasia",
-            );
-
-            req.user = await users.findByPk(payload.id);
-
-            next();
-
-        } catch (err) {
-            res.status(401).send({
-                message: "Unauthorized",
-                errors: err
-            })
-        }
-    },
-
-    currentUser: (req, res) => {
-        res.status(200).send(req.user)
-    },
-
-    register: async (req, res) => {
-        try {
-            const name = req.body.name?.trim();
-            const email = req.body.email?.toLowerCase().trim();
-            const role = req.body.role?.toUpperCase().trim();
-            const password = req.body.password?.trim();
-
-            if (!name) return res.status(400).send({ message: "Error: field name cannot empty" });
-
-            if (!email) return res.status(400).send({ message: "Error: field email cannot empty" });
-
-            if (!email.includes('@')) return res.status(400).send({ message: "Error: invalid email format" });
-
-            if (!role) return res.status(400).send({ message: "Error: field role cannot empty" });
-
-            if (!password) return res.status(400).send({ message: "Error: field password cannot empty" });
-
-            const isEmailExist = await users.findOne({
-                where: { email: email, status: 2 }
-            })
-
-            if (isEmailExist) return res.status(400).send({ message: "Error: email already used" });
-
-            const encryptedPass = await encryptedPassword(password);
-
-            const findRoles = await user_roles.findOne({
-                where: { name: role }
-            })
-
-            if (!findRoles) return res.status(404).send({ message: "Error: role not found" });
-
-            const body = {
-                ...req.body,
-                password: encryptedPass,
-                id_user_role: findRoles.id
-            }
-
-            const createUser = await users.create(body)
-
-            jwt.sign(
-                { id: createUser.dataValues.id },
-                process.env.JWT_SIGNATURE_KEY || "Rahasia",
-                async (err, emailToken) => {
-                    if (err) {
-                        console.log("ErrorJWT:", err.message);
-                        return;
-                    }
-
-                    const url = `http://localhost:8080/api/user/register-verify/${emailToken}`;
-
-                    transporter.sendMail({
-                        from: "Yoso Mekatama",
-                        to: email,
-                        subject: "Activated Account",
-                        html: `
-                          <table width="100%" style="width: 100%">
-                              <tbody>
-                              <tr>
-                                  <td align="center">
-                                  <img src="https://res.cloudinary.com/dptgh7efj/image/upload/v1691487678/samples/hkpggsmxg5flnucw9dp0.png" width="100px" style="margin: 40px" />
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                  <table width="570" align="center">
-                                      <tbody>
-                                      <tr>
-                                          <td>
-                                              <b style="font-size: 22px; color: black;">Hi ${name},</b>
-                                              <p style="font-size: 16px; color: black; margin-bottom: 30px">Your registration is successfully, now you must verify account to activate this account. Please click button bellow to verify your account.</p>
-                                              <a href="${url}" style="font-size: 16px; background-color: #483dff; border-radius: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; margin-top: 30px;">Verify Account</a>
-                                              <p style="font-size: 16px; color: black; margin-top: 30px">Thanks for your confirmation, now you can login using this email.</p>
-                                              <p style="font-size: 16px; color: black; margin-top: 50px">Regards,</p>
-                                              <p style="font-size: 16px; color: black;">Yoso Mekatama Team</p>
-                                          </td>
-                                      </tr>
-                                      </tbody>
-                                  </table>
-                                  </td>
-                              </tr>
-                              </tbody>
-                          </table>
-                          `,
-                    });
-                }
-            );
-
-            res.status(200).json({
-                status: "Created",
-                data: `Please check inbox on ${email} to activate your account`,
-            });
-
-        } catch (err) {
-            res.status(422).send({ message: "Fail while running process" })
-        }
-    },
-
     verifyAccount: async (req, res) => {
         try {
             const user = jwt.verify(
@@ -205,7 +55,7 @@ module.exports = {
 
             const id = user.id;
             const { status } = await users.findByPk(id);
-            
+
             if (status === 1) {
                 res.status(422).render("response", {
                     message: "This account has been activated",
@@ -215,7 +65,7 @@ module.exports = {
                 return
             }
 
-            await users.update({ status: 1 }, { where: { id } });
+            await users.update({ email_verified_at: new Date(), status: 1 }, { where: { id } });
 
             res.status(200).render("response", {
                 message: "Your account has been successfully activated",
@@ -226,7 +76,69 @@ module.exports = {
         }
     },
 
-    updateUser: (req, res) => {},
+    updateUser: async (req, res) => {
+        const { user, update } = req.data
 
-    deleteUser: (req, res) => {},
+        try {
+            users.update(update, { where: { id: user.id } })
+
+            res.status(200).send({ message: "Update data successfully" })
+
+        } catch (error) {
+            res.status(200).send({ error })
+        }
+    },
+
+    deleteUser: async (req, res) => {
+        try {
+            const payload = getTokenPayload(req.headers.authorization);
+
+            const user = await users.findByPk(payload.id);
+
+            users.update({ deleted_at: new Date(), status: 2 }, { where: { id: user.id } })
+                .then(() => {
+                    res.status(200).send({ message: `Delete account with id: ${user.id} successfully` })
+                }).catch(error => {
+                    res.status(422).send({ error })
+                })
+
+        } catch (error) {
+            res.status(422).send({ error })
+        }
+    },
+
+    checkPassword: async (req, res) => {
+        const password = req.body.password?.trim();
+
+        if (!password) return res.status(400).send({ message: "Error: field password cannot empty" });
+
+        const payload = getTokenPayload(req.headers.authorization);
+
+        const user = await users.findByPk(payload.id);
+
+        const comparePassword = await checkPassword(user.password, password);
+
+        if (!comparePassword) return res.status(400).send({ message: "Error: password incorrect" });
+
+        res.status(200).send({ message: "password correct" })
+    },
+
+    resetPassword: async (req, res) => {
+        const password = req.body.password?.trim();
+
+        if (!password) return res.status(400).send({ message: "Error: field password cannot empty" });
+
+        const encryptedPass = await encryptedPassword(password);
+
+        const payload = getTokenPayload(req.headers.authorization);
+
+        const user = await users.findByPk(payload.id);
+
+        users.update({ deleted_at: new Date(), password: encryptedPass }, { where: { id: user.id } })
+            .then(() => {
+                res.status(200).send({ message: "Update password successfully" })
+            }).catch(error => {
+                res.status(422).send({ error })
+            })
+    },
 }
