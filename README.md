@@ -5,13 +5,13 @@ Base url:
 
 ## User Service
 
-1. Register
+#### 1. Register
 
 | HTTP Method | Endpoint | Usage |
 | :---------: | -------- | ----- |
 | POST | `/api/user/register` | Create new user |
 
-#### Request Body
+**Request Body**
 
 ```sh
 {
@@ -22,7 +22,7 @@ Base url:
 }
 ```
 
-#### Response Success
+**Response Success**
 
 ```sh
 {
@@ -31,6 +31,6 @@ Base url:
 }
 ```
 
-2. Login
+#### 2. Login
 
 > developed by yusronab
