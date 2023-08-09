@@ -5,6 +5,8 @@ Base url:
 
 ## User Service
 
+1. Register
+
 | HTTP Method | Endpoint | Usage |
 | :---------: | -------- | ----- |
 | POST | `/api/user/register` | Create new user |
@@ -28,5 +30,7 @@ Base url:
     "data" : "Please check inbox on example@gmail.com to activate your account",
 }
 ```
+
+2. Login
 
 > developed by yusronab
