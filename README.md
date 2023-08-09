@@ -3,6 +3,17 @@
 Base url:
 * `http://localhost:8080`
 
+### Service Available
+
+* [User Service](#user-service)
+
+### Tech Stack
+
+- [x] Node.js
+- [x] Express.js
+- [x] Nodemailer
+- [x] jsonwebtoken
+
 # User Service
 
 ### 1. Register
@@ -43,4 +54,4 @@ Base url:
 
 ### 7. Delete User
 
-> developed by yusronab
+> _developed by yusronab_
