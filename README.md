@@ -1,13 +1,13 @@
 # BACKEND YOSO MEKATAMA
 
-Base url:
+**Base url**
 * `http://localhost:8080`
 
-### Service Available
+**Service Available**
 
 * [User Service](#user-service)
 
-### Tech Stack
+**Tech Stack**
 
 - [x] Node.js
 - [x] Express.js
@@ -16,13 +16,13 @@ Base url:
 
 # User Service
 
-### 1. Register
+**1. Register**
 
 | HTTP Method | Endpoint | Usage |
 | :---------: | -------- | ----- |
 | POST | `/api/user/register` | Create new user |
 
-**Request Body**
+Request Body
 
 ```sh
 {
@@ -33,7 +33,7 @@ Base url:
 }
 ```
 
-**Response Success**
+Response Success
 
 ```sh
 {
@@ -42,16 +42,16 @@ Base url:
 }
 ```
 
-### 2. Login
+**2. Login**
 
-### 3. Current User
+**3. Current User**
 
-### 4. Check Password
+**4. Check Password**
 
-### 5. Reset Password
+**5. Reset Password**
 
-### 6. Update Data User
+**6. Update Data User**
 
-### 7. Delete User
+**7. Delete User**
 
 > _developed by yusronab_
