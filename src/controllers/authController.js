@@ -56,7 +56,7 @@ module.exports = {
                                       <tbody>
                                       <tr>
                                           <td>
-                                              <b style="font-size: 22px; color: black;">Hi ${name},</b>
+                                              <b style="font-size: 22px; color: black;">Hi ${body.name},</b>
                                               <p style="font-size: 16px; color: black; margin-bottom: 30px">Your registration is successfully, now you must verify account to activate this account. Please click button bellow to verify your account.</p>
                                               <a href="${url}" style="font-size: 16px; background-color: #483dff; border-radius: 10px; text-decoration: none; color: white; padding: 10px; cursor: pointer; margin-top: 30px;">Verify Account</a>
                                               <p style="font-size: 16px; color: black; margin-top: 30px">Thanks for your confirmation, now you can login using this email.</p>
