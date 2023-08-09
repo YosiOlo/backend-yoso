@@ -3,9 +3,9 @@
 Base url:
 * `http://localhost:8080`
 
-## User Service
+# User Service
 
-#### 1. Register
+### 1. Register
 
 | HTTP Method | Endpoint | Usage |
 | :---------: | -------- | ----- |
@@ -31,6 +31,16 @@ Base url:
 }
 ```
 
-#### 2. Login
+### 2. Login
+
+### 3. Current User
+
+### 4. Check Password
+
+### 5. Reset Password
+
+### 6. Update Data User
+
+### 7. Delete User
 
 > developed by yusronab
