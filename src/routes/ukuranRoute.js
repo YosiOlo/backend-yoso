@@ -1,13 +1,13 @@
 const router = require("express").Router();
 
-const ukuranController = require("../controllers/ukuranController");
+const controller = require("../controllers/ukuranController");
 
-router.get('/', ukuranController.getUkuran);
+router.get('/', controller.getUkuran);
 
-router.post('/', ukuranController.createUkuran);
+router.post('/', controller.createUkuran);
 
-router.put('/:id', ukuranController.updateUkuran);
+router.put('/:id', controller.updateUkuran);
 
-router.delete('/:id', ukuranController.deleteUkuran);
+router.delete('/:id', controller.deleteUkuran);
 
 module.exports = router;
