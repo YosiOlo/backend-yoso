@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'divisi',
     timestamps: false,
     underscored: true,
+    freezeTableName: true
   });
   return divisi;
 };

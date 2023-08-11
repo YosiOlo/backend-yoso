@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   subcont.init({
     nama: DataTypes.STRING,
     alamat: DataTypes.STRING,
-    kab_Kota: DataTypes.STRING,
+    kab_kota: DataTypes.STRING,
     telp: DataTypes.STRING,
     fax: DataTypes.STRING,
     created_at: DataTypes.DATE,
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'subcont',
     timestamps: false,
     underscored: true,
+    freezeTableName: true,
   });
   return subcont;
 };

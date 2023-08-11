@@ -13,8 +13,6 @@ module.exports = {
     },
 
     create: (req, res) => {
-        console.log(req.data);
-
         const body = {
             nama: req.data.nama,
             alamat: req.data.alamat,
@@ -45,7 +43,6 @@ module.exports = {
         customers.update(body, { where: { id } }).then(data => {
             res.status(200).send({
                 message: "Update data successfully",
-                data
             });
         }).catch(error => {
             res.status(422).send({ message: error.original });

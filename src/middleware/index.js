@@ -136,7 +136,7 @@ module.exports = {
     createSubcontChecker: (req, res, next) => {
         const nama = req.body.nama?.toUpperCase().trim();
         const alamat = req.body.alamat?.trim();
-        const kab_Kota = req.body.kab_Kota?.trim();
+        const kab_Kota = req.body.kab_kota?.trim();
         const telp = req.body.telp?.trim();
         const fax = req.body.fax?.trim();
 

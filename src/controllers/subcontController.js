@@ -13,12 +13,10 @@ module.exports = {
     },
 
     create: (req, res) => {
-        console.log(req.data);
-
         const body = {
             nama: req.data.nama,
             alamat: req.data.alamat,
-            kab_Kota: req.data.kab_Kota,
+            kab_kota: req.data.kab_kota,
             telp: req.data.telp,
             fax: req.data.fax,
             created_at: new Date(),
@@ -40,7 +38,6 @@ module.exports = {
             ...req.data,
             updated_at: new Date(),
         };
-        console.log(`u-info:${body}`);
 
         const id = req.params.id
 

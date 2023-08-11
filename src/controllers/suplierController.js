@@ -13,8 +13,6 @@ module.exports = {
     },
 
     create: (req, res) => {
-        console.log(req.data);
-
         const body = {
             nama: req.data.nama,
             alamat: req.data.alamat,
