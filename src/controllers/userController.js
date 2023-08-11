@@ -19,6 +19,58 @@ module.exports = {
         })
     },
 
+    createRole: (req, res) => {
+        const body = {
+            name: req.data.name,
+            code: req.data.code,
+            description: req.data.description,
+            module_access: req.data.module_access,
+            created_at: new Date(),
+            updated_at: new Date(),
+        };
+
+        user_roles.create(body).then(data => {
+            res.status(201).send({
+                message: "Created",
+                data
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    updateRole: (req, res) => {
+        const body = {
+            name: req.data.name,
+            code: req.data.code,
+            description: req.data.description,
+            module_access: req.data.module_access,
+            updated_at: new Date(),
+        };
+
+        const id = req.params.id;
+
+        user_roles.update(body, { where: { id } }).then(() => {
+            res.status(200).send({
+                message: "Update data successfully"
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    deleteRole: (req, res) => {
+        const id = req.params.id;
+
+        user_roles.update({ deleted_at: new Date() }, { where: { id } }).then(() => {
+            res.status(200).send({
+                message: "Delete data successfully"
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
     getAllUser: (req, res) => {
         users.findAll({
             include: [

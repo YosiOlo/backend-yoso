@@ -12,6 +12,7 @@ router.get('/register-verify/:token', userController.verifyAccount);
 router.get('/current', middleware.whoIsLogin, authController.currentUser);
 
 /* POST METHOD */
+router.post('/user-roles', middleware.createRoleChecker, userController.createRole);
 router.post('/register', middleware.registerChecker, authController.register);
 router.post('/login', middleware.loginChecker, authController.login);
 router.post('/check-password', middleware.whoIsLogin, userController.checkPassword);
@@ -19,6 +20,10 @@ router.post('/reset-password', middleware.whoIsLogin, userController.resetPasswo
 
 /* PUT METHOD */
 router.put('/update', middleware.whoIsLogin, middleware.updateUserChecker, userController.updateUser);
-router.put('/delete', middleware.whoIsLogin, userController.deleteUser);
+router.put('/user-roles/:id', middleware.createRoleChecker, userController.updateRole);
+
+/* DELETE METHOD */
+router.delete('/user-roles/:id', userController.deleteRole);
+router.delete('/delete', middleware.whoIsLogin, userController.deleteUser);
 
 module.exports = router;

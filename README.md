@@ -5,12 +5,62 @@
 
 **Service Available**
 
-* [User Service](#user-service)
-* [Customer Service](#customer-service)
-* [Divisi Service](#divisi-service)
-* [Subcont Service](#subcont-service)
-* [Suplier Service](#suplier-service)
-* [Ukuran Service](#ukuran-service)
+<details>
+<summary>User Service</summary>
+
+* [Register](#1-register)
+* [Login](#2-login)
+* [Current user](#3-current-user)
+* [Check password](#4-check-password)
+* [Reset password](#5-reset-password)
+* [Update data user](#6-update-data-user)
+* [Delete user](#7-delete-user)
+</details>
+
+<details>
+<summary>Customer Service</summary>
+
+* [Fetching list data customer](#1-fetching-list-data-customer)
+* [Create new customer](#2-create-new-customer)
+* [Update data customer](#3-update-data-customer)
+* [Delete data customer](#4-delete-data-customer)
+</details>
+
+<details>
+<summary>Divisi Service</summary>
+
+* [Fetching list data divisi](#1-fetching-list-data-divisi)
+* [Create new divisi](#2-create-new-divisi)
+* [Update data divisi](#3-update-data-divisi)
+* [Delete data divisi](#4-delete-data-divisi)
+</details>
+
+<details>
+<summary>Subcont Service</summary>
+
+* [Fetching list data subcont](#1-fetching-list-data-subcont)
+* [Create new subcont](#2-create-new-subcont)
+* [Update data subcont](#3-update-data-subcont)
+* [Delete data subcont](#4-delete-data-subcont)
+</details>
+
+<details>
+<summary>Suplier Service</summary>
+
+* [Fetching list data suplier](#1-fetching-list-data-suplier)
+* [Create new suplier](#2-create-new-suplier)
+* [Update data suplier](#3-update-data-suplier)
+* [Delete data suplier](#4-delete-data-suplier)
+</details>
+
+<details>
+<summary>Ukuran Service</summary>
+
+* [Fetching list data customer](#1-fetching-list-data-ukuran)
+* [Create new customer](#2-create-new-ukuran)
+* [Update data customer](#3-update-data-ukuran)
+* [Delete data customer](#4-delete-data-ukuran)
+</details>
 
 **Tech Stack**
 
@@ -18,10 +68,11 @@
 - [x] Express.js
 - [x] Nodemailer
 - [x] jsonwebtoken
+- [x] Sequelize
 
 # User Service
 
-**1. Register**
+#### 1. Register
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -47,21 +98,21 @@ Response Success
 }
 ```
 
-**2. Login**
+#### 2. Login
 
-**3. Current user**
+#### 3. Current user
 
-**4. Check password**
+#### 4. Check password
 
-**5. Reset password**
+#### 5. Reset password
 
-**6. Update data user**
+#### 6. Update data user
 
-**7. Delete user**
+#### 7. Delete user
 
 # Customer Service
 
-**1. Fetching list data customer**
+#### 1. Fetching list data customer
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -107,7 +158,7 @@ Response Success
 }
 ```
 
-**2. Create new customer**
+#### 2. Create new customer
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -142,7 +193,7 @@ Response Success
 }
 ```
 
-**3. Update data customer**
+#### 3. Update data customer
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -167,7 +218,7 @@ Response Success
 }
 ```
 
-**4. Delete data customer**
+#### 4. Delete data customer
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -183,7 +234,7 @@ Response Success
 
 # Divisi Service
 
-**1. Fetching list data divisi**
+#### 1. Fetching list data divisi
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -213,7 +264,7 @@ Response Success
 }
 ```
 
-**2. Create new divisi**
+#### 2. Create new divisi
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -242,7 +293,7 @@ Response Success
 }
 ```
 
-**3. Update data divisi**
+#### 3. Update data divisi
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -264,7 +315,7 @@ Response Success
 }
 ```
 
-**4. Delete data divisi**
+#### 4. Delete data divisi
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -280,7 +331,7 @@ Response Success
 
 # Subcont Service
 
-**1. Fetching list data subcont**
+#### 1. Fetching list data subcont
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -316,7 +367,7 @@ Response Success
 }
 ```
 
-**2. Create new subcont**
+#### 2. Create new subcont
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -353,7 +404,7 @@ Response Success
 }
 ```
 
-**3. Update data subcont**
+#### 3. Update data subcont
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -379,7 +430,7 @@ Response Success
 }
 ```
 
-**4. Delete data subcont**
+#### 4. Delete data subcont
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -395,7 +446,7 @@ Response Success
 
 # Suplier Service
 
-**1. Fetching list data suplier**
+#### 1. Fetching list data suplier
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -431,7 +482,7 @@ Response Success
 }
 ```
 
-**2. Create new suplier**
+#### 2. Create new suplier
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -466,7 +517,7 @@ Response Success
 }
 ```
 
-**3. Update data suplier**
+#### 3. Update data suplier
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -491,7 +542,7 @@ Response Success
 }
 ```
 
-**4. Delete data suplier**
+#### 4. Delete data suplier
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -507,7 +558,7 @@ Response Success
 
 # Ukuran Service
 
-**1. Fetching list data ukuran**
+#### 1. Fetching list data ukuran
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -537,7 +588,7 @@ Response Success
 }
 ```
 
-**2. Create new ukuran**
+#### 2. Create new ukuran
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -566,7 +617,7 @@ Response Success
 }
 ```
 
-**3. Update data ukuran**
+#### 3. Update data ukuran
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
@@ -588,7 +639,7 @@ Response Success
 }
 ```
 
-**4. Delete data ukuran**
+#### 4. Delete data ukuran
 
 | HTTP Method | Endpoint | Params | Authorization |
 | :---------: | -------- | :----: | ------------- |
