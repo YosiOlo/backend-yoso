@@ -13,24 +13,35 @@
 * [Current user](#3-current-user)
 * [Check password](#4-check-password)
 * [Reset password](#5-reset-password)
-* [Update data user](#6-update-data-user)
+* [Update data current user](#6-update-data-current-user)
 * [Delete user](#7-delete-user)
 </details>
 
 <details>
-<summary>User and Role Service</summary>
+<summary>User Service</summary>
 
-* [Fetching list data user]()
-* [Create new user]()
-* [Update data user]()
-* [Delete data user]()
+* [Fetching list data user](#1-fetching-list-data-user)
+* [Create new user](#2-create-new-user)
+* [Update data user](#3-update-data-user)
+* [Delete data user](#4-delete-data-user)
+</details>
 
-<hr>
+<details>
+<summary>User Role Service</summary>
 
-* [Fetching list data user-roles]()
-* [Create new user-role]()
-* [Update data user-role]()
-* [Delete data user-role]()
+* [Fetching list data user-roles](#1-fetching-list-data-user-role)
+* [Create new user-role](#2-create-new-user-role)
+* [Update data user-role](#3-update-data-user-role)
+* [Delete data user-role](#4-delete-data-user-role)
+</details>
+
+<details>
+<summary>Profile Perusahaan Service</summary>
+
+* [Fetching list data perusahaan](#1-fetching-list-data-customer)
+* [Create new perusahaan](#2-create-new-customer)
+* [Update data perusahaan](#3-update-data-customer)
+* [Delete data perusahaan](#4-delete-data-customer)
 </details>
 
 <details>
@@ -116,15 +127,490 @@ Response Success
 
 #### 2. Login
 
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user/login` |  |  |
+
+Request Body
+
+```sh
+{
+    "email" : "example@gmail.com",
+    "password" : "example",
+}
+```
+
+Response Success, this token will expire in 1 day;
+
+```sh
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjcsInJvbGUiOjQsInN0YXR1cyI6MSwiaWF0IjoxNjkxODE2NDQwLCJleHAiOjE2OTE5MDI4NDB9.vdf69obCAwTJ_CADNkoNp05Ywb8qrtvSLaVdBfEPwoI"
+}
+```
+
 #### 3. Current user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| GET | `/api/user/current` |  | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 |
+
+Response Success
+
+```sh
+{
+  "id": 27,
+  "name": "Test 1",
+  "email": "example@gmail.com",
+  "bod": "1990-01-31",
+  "email_verified_at": "2023-08-09T07:36:42.000Z",
+  "password": "$2b$10$FohvdjCgEDX7hLktCrFQkeK9ffxSFaWA.KkUwy9X.a7LfwTFKXUSS",
+  "id_user_role": 4,
+  "two_factor_secret": null,
+  "two_factor_recovery_codes": null,
+  "remember_token": null,
+  "current_team_id": null,
+  "profile_photo_path": null,
+  "status": 1,
+  "created_at": "2023-08-09T07:36:05.000Z",
+  "updated_at": "2023-08-09T07:36:05.000Z",
+  "deleted_at": null
+}
+```
 
 #### 4. Check password
 
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user/check-password` |  | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 |
+
+Request Body
+
+```sh
+{
+    "password" : "example",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "password correct"
+}
+```
+
 #### 5. Reset password
 
-#### 6. Update data user
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user/reset-password` |  | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 |
 
-#### 7. Delete user
+Request Body
+
+```sh
+{
+    "password" : "example",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Update password successfully"
+}
+```
+
+#### 6. Update data current user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| PUT | `/api/user/update` |  | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 |
+
+Request Body
+
+```sh
+{
+    "name" : "John Doe",
+    "email" : "example@gmail.com",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Update data successfully"
+}
+```
+
+#### 7. Delete current user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| DELETE | `/api/user/delete` |  | Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 |
+
+Response Success
+
+```sh
+{
+  "message": "Delete account with id: 27 successfully"
+}
+```
+
+# User Service
+
+#### 1. Fetching list data user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| GET | `/api/user` |  |  |
+
+Response Success
+
+```sh
+{
+  "message": "Success",
+  "count": 12,
+  "data": [
+    {
+      "id": 1,
+      "name": "SUPERADMIN",
+      "email": "superadmin@gmail.com",
+      "bod": "1990-01-31",
+      "email_verified_at": "2022-03-14T05:00:57.000Z",
+      "password": "$2Y$10$InjsS3EOPzY4wU1F9QFdQu/xCHiPwDFvUpq0.raEB7wrs//MDCUDG",
+      "id_user_role": 1,
+      "two_factor_secret": null,
+      "two_factor_recovery_codes": null,
+      "remember_token": null,
+      "current_team_id": null,
+      "profile_photo_path": null,
+      "status": 1,
+      "created_at": "2022-03-14T05:01:24.000Z",
+      "updated_at": "2022-03-14T04:49:50.000Z",
+      "deleted_at": null,
+      "user_role": {
+        "code": "ADM",
+        "name": "SUPERADMIN"
+      },
+      "user_status": {
+        "name": "Aktif"
+      }
+    },
+    {
+      "id": 2,
+      "name": "SLAMET WIDODO",
+      "email": "slamet@gmail.com",
+      "bod": "1990-03-31",
+      "email_verified_at": null,
+      "password": "$2y$10$uNdHvOz45wk5YxGgocjsNOOLLw6ZhH16zo2pmnBTFTBLUYdY.ffzy",
+      "id_user_role": 1,
+      "two_factor_secret": null,
+      "two_factor_recovery_codes": null,
+      "remember_token": null,
+      "current_team_id": null,
+      "profile_photo_path": null,
+      "status": 1,
+      "created_at": "2022-03-14T04:03:26.000Z",
+      "updated_at": "2022-04-05T08:52:57.000Z",
+      "deleted_at": null,
+      "user_role": {
+        "code": "ADM",
+        "name": "SUPERADMIN"
+      },
+      "user_status": {
+        "name": "Aktif"
+      }
+    },
+  ]
+}
+```
+
+#### 2. Create new user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user` |  |  |
+
+Request Body
+
+```sh
+{
+    "name" : "John Doe",
+    "email" : "example@gmail.com",
+    "bod" : "2010-01-01",
+    "status" : "aktif",
+    "role" : "sales",
+    "password" : "20100101",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Created",
+  "data": 
+  {
+    "id": 28,
+    "name": "John Doe",
+    "email": "example@gmail.com",
+    "bod": "2010-01-01",
+    "status": 1,
+    "password": "$2b$10$MFbbYGd5divBL74pP5ETCu6c8PwHlDJc9ncUp7JBVoG4udM0LrQ9C",
+    "id_user_role": 3,
+    "created_at": "2023-08-12T05:31:12.845Z",
+    "updated_at": "2023-08-12T05:31:12.845Z"
+  }
+}
+```
+
+#### 3. Update data user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| PUT | `/api/user/update/:id` |  |  |
+
+Request Body
+
+```sh
+{
+    "name" : "John Doe",
+    "email" : "example@gmail.com",
+    "bod" : "2010-01-01",
+    "status" : "nonaktif",
+    "role" : "sales",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Update data successfully"
+}
+```
+
+#### 4. Delete data user
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| DELETE | `/api/user/delete/:id` |  |  |
+
+Response Success
+
+```sh
+{
+  "message": "Delete data successfully"
+}
+```
+
+# User Role Service
+
+#### 1. Fetching list data user role
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| GET | `/api/user/user-roles` |  |  |
+
+Response Success
+
+```sh
+{
+  "message": "Success",
+  "data": [
+    {
+      "id": 1,
+      "name": "SUPERADMIN",
+      "code": "ADM",
+      "description": "ADMIN SUPER",
+      "module_access": "{\"angsuran\":[\"C\",\"R\",\"U\"],\"barang_jadi\":[\"C\",\"R\",\"U\"],\"barang_sj\":[\"C\",\"R\",\"U\"],\"barang_subcont\":[\"C\",\"R\",\"U\"],\"cek_permintaan\":[\"C\",\"R\",\"U\"],\"customers\":[\"C\",\"R\",\"U\",\"D\"],\"dashboard_card_gross\":[\"R\"],\"dashboard_card_limbah\":[\"R\"],\"dashboard_card_purchase_order\":[\"R\"],\"dashboard_card_sales_order\":[\"R\"],\"dashboard_grafic_sales_order\":[\"R\"],\"dashboard_list_produksi\":[\"R\"],\"dashboard_list_sales_order\":[\"R\"],\"dashboard_material_keluar\":[\"R\"],\"dashboard_material_masuk\":[\"R\"],\"divisi\":[\"C\",\"R\",\"U\",\"D\"],\"cek_item\":[\"C\",\"R\",\"U\"],\"formula_item\":[\"C\",\"R\",\"U\"],\"formula_utama\":[\"C\",\"R\",\"U\"],\"limbah\":[\"C\",\"R\",\"U\"],\"material\":[\"C\",\"R\",\"U\"],\"material_keluar\":[\"C\",\"R\",\"U\"],\"material_masuk\":[\"C\",\"R\",\"U\"],\"penjualan\":[\"C\",\"R\",\"U\",\"D\"],\"produk\":[\"C\",\"R\",\"U\",\"D\"],\"produksi\":[\"C\",\"R\",\"U\"],\"profile_perusahaan\":[\"R\",\"U\"],\"purchase\":[\"C\",\"R\",\"U\"],\"report_menu\":[\"R\"],\"statuses\":[\"C\",\"R\",\"U\"],\"subcont\":[\"C\",\"R\",\"U\",\"D\"],\"suplier\":[\"C\",\"R\",\"U\",\"D\"],\"surat_jalan_sales_order\":[\"R\"],\"tools\":[\"C\",\"R\",\"U\"],\"ukuran\":[\"C\",\"R\",\"U\",\"D\"],\"user_roles\":[\"C\",\"R\",\"U\"],\"users\":[\"C\",\"R\",\"U\",\"D\"]}",
+      "created_at": "2022-01-10T15:41:47.000Z",
+      "updated_at": "2022-06-09T04:07:47.000Z",
+      "deleted_at": null
+    },
+    {
+      "id": 2,
+      "name": "PPIC",
+      "code": "PIC",
+      "description": "OPERATOR PRODUKSI",
+      "module_access": "{\"barang_jadi\":[\"C\",\"R\",\"U\",\"D\"],\"barang_sj\":[\"C\",\"R\",\"U\",\"D\"],\"barang_subcont\":[\"C\",\"R\",\"U\"],\"cek_permintaan\":[\"C\",\"R\",\"U\"],\"customers\":[\"R\"],\"dashboard_list_produksi\":[\"R\"],\"dashboard_list_sales_order\":[\"R\"],\"dashboard_material_keluar\":[\"R\"],\"dashboard_material_masuk\":[\"R\"],\"divisi\":[\"C\",\"R\",\"U\"],\"formula_item\":[\"C\",\"R\",\"U\"],\"formula_utama\":[\"C\",\"R\",\"U\"],\"limbah\":[\"C\",\"R\",\"U\",\"D\"],\"material\":[\"C\",\"R\",\"U\"],\"material_keluar\":[\"C\",\"R\",\"U\",\"D\"],\"material_masuk\":[\"C\",\"R\",\"U\",\"D\"],\"produk\":[\"C\",\"R\",\"U\",\"D\"],\"produksi\":[\"C\",\"R\",\"U\",\"D\"],\"profile_perusahaan\":[\"R\"],\"purchase\":[\"C\",\"R\",\"U\",\"D\"],\"subcont\":[\"C\",\"R\",\"U\",\"D\"],\"suplier\":[\"C\",\"R\",\"U\",\"D\"],\"surat_jalan_sales_order\":[\"R\"],\"tools\":[\"C\",\"R\",\"U\",\"D\"],\"ukuran\":[\"C\",\"R\",\"U\"]}",
+      "created_at": "2022-01-10T15:41:47.000Z",
+      "updated_at": "2022-04-16T03:17:39.000Z",
+      "deleted_at": null
+    },
+  ]
+}
+```
+
+#### 2. Create new user role
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user/user-roles` |  |  |
+
+Request Body
+
+```sh
+{
+  "code": "SPD",
+  "name": "Sarjana",
+  "description": "Sarjana Pendidikan",
+  "module": "{\"barang_jadi\":[\"C\",\"R\",\"U\",\"D\"],\"barang_sj\":[\"C\",\"R\",\"U\",\"D\"],\"barang_subcont\":[\"C\",\"R\",\"U\"],\"cek_permintaan\":[\"C\",\"R\",\"U\"],\"customers\":[\"R\"],\"dashboard_list_produksi\":[\"R\"],\"dashboard_list_sales_order\":[\"R\"],\"dashboard_material_keluar\":[\"R\"],\"dashboard_material_masuk\":[\"R\"],\"divisi\":[\"C\",\"R\",\"U\"],\"formula_item\":[\"C\",\"R\",\"U\"],\"formula_utama\":[\"C\",\"R\",\"U\"],\"limbah\":[\"C\",\"R\",\"U\",\"D\"],\"material\":[\"C\",\"R\",\"U\"],\"material_keluar\":[\"C\",\"R\",\"U\",\"D\"],\"material_masuk\":[\"C\",\"R\",\"U\",\"D\"],\"produk\":[\"C\",\"R\",\"U\",\"D\"],\"produksi\":[\"C\",\"R\",\"U\",\"D\"],\"profile_perusahaan\":[\"R\"],\"purchase\":[\"C\",\"R\",\"U\",\"D\"],\"subcont\":[\"C\",\"R\",\"U\",\"D\"],\"suplier\":[\"C\",\"R\",\"U\",\"D\"],\"surat_jalan_sales_order\":[\"R\"],\"tools\":[\"C\",\"R\",\"U\",\"D\"],\"ukuran\":[\"C\",\"R\",\"U\"]}",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Created",
+  "data": 
+  {
+    "id": 8,
+    "name": "SARJANA",
+    "code": "SPD",
+    "description": "SARJANA PENDIDIKAN",
+    "created_at": "2023-08-12T05:42:30.504Z",
+    "updated_at": "2023-08-12T05:42:30.504Z"
+  }
+}
+```
+
+#### 3. Update data user role
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| PUT | `/api/user/user-roles/:id` |  |  |
+
+Request Body
+
+```sh
+{
+  "code": "SPD",
+  "name": "Sarjana Pendidikan",
+  "description": "Pahlawan perlu tanda jasa",
+  "module": "{\"barang_jadi\":[\"C\",\"R\",\"U\",\"D\"],\"barang_sj\":[\"C\",\"R\",\"U\",\"D\"],\"barang_subcont\":[\"C\",\"R\",\"U\"],\"cek_permintaan\":[\"C\",\"R\",\"U\"],\"customers\":[\"R\"],\"dashboard_list_produksi\":[\"R\"],\"dashboard_list_sales_order\":[\"R\"],\"dashboard_material_keluar\":[\"R\"],\"dashboard_material_masuk\":[\"R\"],\"divisi\":[\"C\",\"R\",\"U\"],\"formula_item\":[\"C\",\"R\",\"U\"],\"formula_utama\":[\"C\",\"R\",\"U\"],\"limbah\":[\"C\",\"R\",\"U\",\"D\"],\"material\":[\"C\",\"R\",\"U\"],\"material_keluar\":[\"C\",\"R\",\"U\",\"D\"],\"material_masuk\":[\"C\",\"R\",\"U\",\"D\"],\"produk\":[\"C\",\"R\",\"U\",\"D\"],\"produksi\":[\"C\",\"R\",\"U\",\"D\"],\"profile_perusahaan\":[\"R\"],\"purchase\":[\"C\",\"R\",\"U\",\"D\"],\"subcont\":[\"C\",\"R\",\"U\",\"D\"],\"suplier\":[\"C\",\"R\",\"U\",\"D\"],\"surat_jalan_sales_order\":[\"R\"],\"tools\":[\"C\",\"R\",\"U\",\"D\"],\"ukuran\":[\"C\",\"R\",\"U\"]}"
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Update data successfully"
+}
+```
+
+#### 4. Delete data user role
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| DELETE | `/api/user/user-roles/:id` |  |  |
+
+Response Success
+
+```sh
+{
+  "message": "Update data successfully"
+}
+```
+
+# Profile Perusahaan
+
+#### 1. Fetching list data perusahaan
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| GET | `/api/user/company` |  |  |
+
+Response Success
+
+```sh
+{
+  "message": "Success",
+  "data": 
+  {
+    "id": 1,
+    "nama": "CV. YOSO MEKATAMA",
+    "alamat": "Ruko Villa Mutiara Cikarang Blok R2 N. 16 & 17 Ciantara Cikarang Selatan - Bekasi",
+    "kab_kota": "Cikarang Utara, Bekasi",
+    "image": "CV. YOSO MEKATAMA.png",
+    "telp": "02189901168",
+    "fax": "02189901498",
+    "created_at": null,
+    "updated_at": "2022-04-05T07:41:55.000Z"
+  }
+}
+```
+
+#### 2. Create new perusahaan
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| POST | `/api/user/company` |  |  |
+
+Request Body
+
+```sh
+{
+    "nama" : "pt. adung international",
+    "alamat" : "Pangkah Barat",
+    "kab_kota" : "Cirebon",
+    "telp" : "0852085212",
+    "fax" : "021021",
+    "image": ImageFile()
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Created",
+  "data": 
+  {
+    "id": 11,
+    "nama": "PT. ADUNG INTERNATIONAL",
+    "alamat": "Pangkah Barat",
+    "kab_kota": "Tegal",
+    "telp": "123",
+    "fax": "123",
+    "image": "image-1691819379856-629710665.jpeg",
+    "created_at": "2023-08-12T05:49:39.902Z",
+    "updated_at": "2023-08-12T05:49:39.902Z"
+  }
+}
+```
+
+#### 3. Update data perusahaan
+
+| HTTP Method | Endpoint | Params | Authorization |
+| :---------: | -------- | :----: | ------------- |
+| DELETE | `/api/user/user-roles/:id` |  |  |
+
+Request Body
+
+```sh
+{
+    "name" : "John Doe",
+    "email" : "example@gmail.com",
+    "bod" : "2010-01-01",
+    "status" : "nonaktif",
+    "role" : "sales",
+}
+```
+
+Response Success
+
+```sh
+{
+  "message": "Update data succesfully",
+  "prevImage": "image-1691819379856-629710665.jpeg",
+  "currentImage": "Not send image"
+}
+```
 
 # Customer Service
 
