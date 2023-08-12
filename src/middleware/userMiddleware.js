@@ -1,4 +1,4 @@
-const { users, user_roles } = require("../models");
+const { users, user_roles, statuses } = require("../models");
 
 const jwt = require("jsonwebtoken");
 
@@ -133,5 +133,57 @@ module.exports = {
         } catch (err) {
             res.status(401).send({ message: req.user ? err : err.message });
         }
+    },
+
+    createUserByAdminChecker: async (req, res, next) => {
+        const name = req.body.name?.trim();
+        const email = req.body.email?.toLowerCase().trim();
+        const bod = req.body.bod?.trim();
+        const status = req.body.status?.trim();
+        const role = req.body.role?.toUpperCase().trim();
+        const password = req.body.password?.trim();
+
+        if (!name) return res.status(400).send({ message: "Error: field name cannot empty" });
+
+        if (!email) return res.status(400).send({ message: "Error: field email cannot empty" });
+
+        if (!email.includes('@')) return res.status(400).send({ message: "Error: invalid email format" });
+
+        if (!role) return res.status(400).send({ message: "Error: field role cannot empty" });
+
+        if (!bod) return res.status(400).send({ message: "Error: field bod cannot empty" });
+
+        if (!status) return res.status(400).send({ message: "Error: field status cannot empty" });
+
+        if (!password) return res.status(400).send({ message: "Error: field password cannot empty" });
+
+        const isEmailExist = await users.findOne({
+            where: { email: email, status: 2 }
+        })
+
+        if (isEmailExist) return res.status(400).send({ message: "Error: email already used" });
+
+        const encryptedPass = await encryptedPassword(password);
+
+        const findRoles = await user_roles.findOne({
+            where: { name: role }
+        })
+
+        if (!findRoles) return res.status(404).send({ message: "Error: role not found" });
+
+        const findStatus = await statuses.findOne({
+            where: { name: status }
+        })
+
+        if (!findStatus) return res.status(404).send({ message: "Error: status not found" });
+    
+        req.user = {
+            ...req.body,
+            password: encryptedPass,
+            id_user_role: findRoles.id,
+            status: findStatus.id,
+        }
+
+        next();
     },
 }

@@ -1,8 +1,10 @@
-const { user_roles, users, statuses } = require("../models");
+const { user_roles, users, statuses, profile_perusahaan } = require("../models");
 
 const jwt = require("jsonwebtoken");
 
 const { checkPassword, encryptedPassword, getTokenPayload } = require("../utils");
+
+const { deleteImageOnMemory } = require("../utils/uploadOnMemory");
 
 module.exports = {
     getAllUserRoles: (req, res) => {
@@ -72,7 +74,7 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        users.findAll({
+        users.findAndCountAll({
             include: [
                 {
                     model: user_roles,
@@ -88,7 +90,8 @@ module.exports = {
         }).then(data => {
             res.status(200).send({
                 message: "Success",
-                data
+                count: data.count,
+                data: data.rows,
             })
         }).catch(err => {
             res.status(422).send({
@@ -124,7 +127,7 @@ module.exports = {
                 color: "#198754",
             });
         } catch (err) {
-            res.status(400).json({ message: err.message });
+            res.status(400).json({ message: err.original });
         }
     },
 
@@ -137,7 +140,7 @@ module.exports = {
             res.status(200).send({ message: "Update data successfully" })
 
         } catch (error) {
-            res.status(200).send({ error })
+            res.status(200).send({ message: error.original })
         }
     },
 
@@ -155,7 +158,7 @@ module.exports = {
                 })
 
         } catch (error) {
-            res.status(422).send({ error })
+            res.status(422).send({ message: error.original })
         }
     },
 
@@ -190,7 +193,148 @@ module.exports = {
             .then(() => {
                 res.status(200).send({ message: "Update password successfully" })
             }).catch(error => {
-                res.status(422).send({ error })
+                res.status(422).send({ message: error.original })
             })
+    },
+
+    createUserByAdmin: (req, res) => {
+        const body = {
+            ...req.user,
+            created_at: new Date(),
+            updated_at: new Date(),
+        };
+
+        users.create(body).then(data => {
+            res.status(201).send({
+                message: "Created",
+                data
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    updateUserByAdmin: (req, res) => {
+        const body = {
+            name: req.user.name,
+            email: req.user.email,
+            bod: req.user.bod,
+            id_user_role: req.user.id_user_role,
+            status: req.user.status,
+            updated_at: new Date(),
+        }
+
+        const id = req.params.id;
+
+        users.update(body, { where: { id } }).then(() => {
+            res.status(200).send({ message: "Update data successfully" });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    deleteUserByAdmin: (req, res) => {
+        const id = req.params.id;
+
+        users.update({ deleted_at: new Date(), }, { where: { id } }).then(() => {
+            res.status(200).send({ message: "Delete data successfully" });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    getStatusData: (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const offset = (page - 1) * limit;
+
+        statuses.findAndCountAll({ limit: limit, offset: offset }).then(data => {
+            const totalItems = data.count;
+            const totalPages = Math.ceil(totalItems / limit);
+
+            const nextPage = page < totalPages ? page + 1 : null;
+            const prevPage = page > 1 ? page - 1 : null;
+
+            res.status(200).send({
+                message: "Success",
+                totalItems: totalItems,
+                totalPages: totalPages,
+                currentPage: page,
+                nextPage: nextPage,
+                prevPage: prevPage,
+                data: data.rows
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    getDataCompany: (req, res) => {
+        profile_perusahaan.findOne().then(data => {
+            res.status(200).send({
+                message: "Success",
+                data
+            });
+        }).catch(error => {
+            res.status(422).send({ message: error.original });
+        })
+    },
+
+    createCompany: (req, res) => {
+        console.log('info-file', req.file);
+
+        const body = req.file ? {
+            ...req.body,
+            nama: req.body.nama.toUpperCase(),
+            image: req.file.filename,
+            created_at: new Date(),
+            updated_at: new Date(),
+        } : {
+            ...req.body,
+            nama: req.body.nama.toUpperCase(),
+            created_at: new Date(),
+            updated_at: new Date(),
+        }
+
+        profile_perusahaan.create(body).then(data => {
+            res.status(201).send({
+                message: "Created",
+                data
+            });
+        }).catch(error => {
+            if (req.file) deleteImageOnMemory(req.file.filename);
+            res.status(422).send({ message: error.original });
+        });
+    },
+
+    updateCompany: async (req, res) => {
+        const id = req.params.id;
+
+        const { image } = await profile_perusahaan.findByPk(id)
+
+        const body = req.file ? {
+            ...req.body,
+            nama: req.body.nama.toUpperCase(),
+            image: req.file.filename,
+            updated_at: new Date(),
+        } : {
+            ...req.body,
+            nama: req.body.nama.toUpperCase(),
+            updated_at: new Date(),
+        }
+
+        if (req.file && image) deleteImageOnMemory(image);
+
+        profile_perusahaan.update(body, { where: { id } }).then(() => {
+            res.status(200).send({
+                message: "Update data succesfully",
+                prevImage: image,
+                currentImage: req.file ? req.file.filename : "Not send image",
+            })
+        }).catch(error => {
+            if (req.file) deleteImageOnMemory(req.file.filename);
+            res.status(422).send({ message: error.original });
+        });
     },
 }

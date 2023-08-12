@@ -6,7 +6,7 @@
 **Service Available**
 
 <details>
-<summary>User Service</summary>
+<summary>Auth Service</summary>
 
 * [Register](#1-register)
 * [Login](#2-login)
@@ -15,6 +15,22 @@
 * [Reset password](#5-reset-password)
 * [Update data user](#6-update-data-user)
 * [Delete user](#7-delete-user)
+</details>
+
+<details>
+<summary>User and Role Service</summary>
+
+* [Fetching list data user]()
+* [Create new user]()
+* [Update data user]()
+* [Delete data user]()
+
+<hr>
+
+* [Fetching list data user-roles]()
+* [Create new user-role]()
+* [Update data user-role]()
+* [Delete data user-role]()
 </details>
 
 <details>

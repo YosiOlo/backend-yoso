@@ -1,15 +1,24 @@
-const { createRoleChecker, loginChecker, registerChecker, updateUserChecker, whoIsLogin } = require("./userMiddleware");
+const {
+    createRoleChecker, 
+    loginChecker, 
+    registerChecker, 
+    updateUserChecker, 
+    whoIsLogin, 
+    createUserByAdminChecker,
+} = require("./userMiddleware");
+
+const {
+    createCompanyChecker,
+} = require("./customMiddleware");
 
 module.exports = {
-    createRoleChecker,
-
     loginChecker,
-
     registerChecker,
-
     updateUserChecker,
-
     whoIsLogin,
+    createRoleChecker,
+    createUserByAdminChecker,
+    createCompanyChecker,
 
     createCustomerChecker: (req, res, next) => {
         const nama = req.body.nama?.toUpperCase().trim();
